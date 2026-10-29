@@ -99,11 +99,11 @@ O projeto foi desenvolvido em Windows 11 utilizando WSL e Docker.
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/SEU_USUARIO/devstart-academy.git
+git clone https://github.com/guilhermetm5/devstart-academy.git
 cd devstart-academy
 ```
 
-Substitua `SEU_USUARIO` pelo nome de usuário do GitHub que hospeda o projeto.
+Substitua `guilhermetm5` pelo nome de usuário do GitHub que hospeda o projeto.
 
 ### 2. Instale as dependências
 
