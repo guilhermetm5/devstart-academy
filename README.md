@@ -103,8 +103,6 @@ git clone https://github.com/guilhermetm5/devstart-academy.git
 cd devstart-academy
 ```
 
-Substitua `guilhermetm5` pelo nome de usuário do GitHub que hospeda o projeto.
-
 ### 2. Instale as dependências
 
 ```bash
