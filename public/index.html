@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevStart Academy | Aprenda desenvolvendo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: #0b1020;
+      color: #f1f5f9;
+      line-height: 1.6;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 8%;
+      border-bottom: 1px solid #202940;
+    }
+
+    .logo { font-size: 21px; font-weight: 800; }
+    .logo span { color: #818cf8; }
+    nav a { color: #cbd5e1; text-decoration: none; margin-left: 24px; }
+
+    main { max-width: 1100px; margin: auto; padding: 75px 24px; }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border: 1px solid #3730a3;
+      background: #1e1b4b;
+      color: #c7d2fe;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 64px);
+      line-height: 1.1;
+      margin: 24px 0;
+      max-width: 750px;
+    }
+
+    h1 span { color: #818cf8; }
+    .intro { color: #a7b2c8; max-width: 620px; font-size: 18px; }
+
+    .course {
+      margin-top: 55px;
+      padding: 32px;
+      border: 1px solid #29344d;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #151d33, #101629);
+      max-width: 700px;
+    }
+
+    .course small { color: #a5b4fc; }
+    .course h2 { margin: 12px 0; font-size: 26px; }
+    .course p { color: #a7b2c8; margin-bottom: 22px; }
+
+    .button {
+      display: inline-block;
+      background: #6366f1;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 9px;
+      text-decoration: none;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+    }
+
+    .button:hover { background: #4f46e5; }
+
+    .features {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 48px;
+      color: #cbd5e1;
+    }
+
+    footer {
+      border-top: 1px solid #202940;
+      padding: 25px;
+      text-align: center;
+      color: #8490a8;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 18px 5%; }
+      nav a { margin-left: 10px; font-size: 13px; }
+      main { padding-top: 48px; }
+      .course { padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">DevStart<span>.</span></div>
+    <nav>
+      <a href="#curso">Cursos</a>
+      <a href="#sobre">Sobre</a>
+    </nav>
+  </header>
+
+  <main>
+    <span class="badge">● PLATAFORMA DE APRENDIZADO</span>
+
+    <h1>Aprenda tecnologia.<br><span>Construa o futuro.</span></h1>
+
+    <p class="intro">
+      Conhecimento prático para desenvolvedores que querem evoluir.
+      Aprenda conceitos, pratique comandos e transforme conhecimento
+      em projetos reais.
+    </p>
+
+    <section class="course" id="curso">
+      <small>DESENVOLVIMENTO BACKEND · MÓDULO 01</small>
+      <h2>MongoDB para Desenvolvedores</h2>
+      <p>
+        Domine os comandos essenciais do MongoDB, aprenda a manipular
+        documentos e conheça os fundamentos de bancos NoSQL.
+      </p>
+      <a class="button" href="/curso.html">Começar módulo →</a>
+    </section>
+
+    <section class="features" id="sobre">
+      <div>📚 Conteúdo prático</div>
+      <div>💻 Exemplos de código</div>
+      <div>🏆 Certificado demonstrativo</div>
+    </section>
+  </main>
+
+  <footer>
+    DevStart Academy · Protótipo demonstrativo · Sem validade oficial
+  </footer>
+</body>
+</html>

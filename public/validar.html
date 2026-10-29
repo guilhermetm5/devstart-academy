@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Validar certificado | DevStart Academy</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#0b1020;color:#f1f5f9;font-family:Arial,sans-serif;line-height:1.6}
+header{padding:20px 7%;border-bottom:1px solid #29344d;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:21px;font-weight:bold}
+.logo span{color:#818cf8}
+a{color:#a5b4fc}
+header a{text-decoration:none}
+main{max-width:650px;margin:60px auto;padding:0 20px}
+.card{background:#131c31;border:1px solid #29344d;border-radius:16px;padding:30px}
+.badge{color:#a5b4fc;font-size:12px;font-weight:bold;letter-spacing:1px}
+h1{font-size:32px;line-height:1.2;margin:14px 0}
+p{color:#b7c3d8}
+label{display:block;margin:25px 0 8px}
+input{width:100%;padding:14px;background:#080d19;border:1px solid #394661;border-radius:8px;color:white;font-size:16px}
+button{margin-top:15px;width:100%;padding:14px;background:#6366f1;border:0;border-radius:8px;color:white;font-size:16px;font-weight:bold;cursor:pointer}
+button:hover{background:#4f46e5}
+.resultado{margin-top:25px;padding:20px;border-radius:10px}
+.ok{border:1px solid #287c55;background:#102b24}
+.erro{border:1px solid #85404c;background:#351d27}
+.resultado h2{margin-top:0;font-size:21px}
+.linha{border-bottom:1px solid #344158;padding:10px 0}
+.linha strong{display:block;color:#94a3b8;font-size:12px;text-transform:uppercase}
+.linha span{overflow-wrap:anywhere}
+.aviso{font-size:12px;color:#fca5a5;margin-top:20px}
+footer{text-align:center;color:#8490a8;padding:25px;font-size:13px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">DevStart<span>.</span></div>
+  <a href="/">Voltar ao início</a>
+</header>
+
+<main>
+  <section class="card">
+    <span class="badge">CONSULTA DE AUTENTICIDADE</span>
+    <h1>Validar certificado</h1>
+    <p>Informe o código autenticador impresso no certificado para consultar o registro no sistema.</p>
+
+    <form id="formulario">
+      <label for="codigo">Código autenticador</label>
+      <input id="codigo" name="codigo" maxlength="12" required
+             placeholder="Ex.: A8F3K9X2"
+             autocomplete="off">
+      <button type="submit">Consultar certificado</button>
+    </form>
+
+    <div id="resultado" class="resultado" hidden aria-live="polite"></div>
+
+    <p class="aviso">
+      Ambiente demonstrativo. Os certificados apresentados não possuem validade oficial.
+    </p>
+  </section>
+</main>
+
+<footer>DevStart Academy · Protótipo demonstrativo · Sem validade oficial</footer>
+
+<script>
+const formulario = document.getElementById("formulario");
+const campoCodigo = document.getElementById("codigo");
+const resultado = document.getElementById("resultado");
+
+function adicionarLinha(rotulo, valor) {
+  const linha = document.createElement("div");
+  linha.className = "linha";
+
+  const titulo = document.createElement("strong");
+  titulo.textContent = rotulo;
+
+  const texto = document.createElement("span");
+  texto.textContent = valor;
+
+  linha.append(titulo, texto);
+  resultado.appendChild(linha);
+}
+
+function mostrarErro(mensagem) {
+  resultado.replaceChildren();
+  resultado.className = "resultado erro";
+
+  const titulo = document.createElement("h2");
+  titulo.textContent = "Certificado não validado";
+
+  const texto = document.createElement("p");
+  texto.textContent = mensagem;
+
+  resultado.append(titulo, texto);
+  resultado.hidden = false;
+}
+
+async function consultar(codigo) {
+  resultado.hidden = true;
+  resultado.textContent = "";
+
+  try {
+    const resposta = await fetch(
+      "/api/validacao/" + encodeURIComponent(codigo)
+    );
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok || !dados.encontrado) {
+      mostrarErro(dados.mensagem || "Certificado não encontrado.");
+      return;
+    }
+
+    resultado.replaceChildren();
+    resultado.className = "resultado ok";
+
+    const titulo = document.createElement("h2");
+    titulo.textContent = dados.status === "valido"
+      ? "✓ Registro encontrado"
+      : "⚠ Certificado não está válido";
+
+    resultado.appendChild(titulo);
+
+    adicionarLinha("Titular", dados.titular);
+    adicionarLinha("Curso", dados.curso);
+
+    adicionarLinha(
+      "Data de emissão",
+      new Date(dados.dataEmissao).toLocaleDateString("pt-BR")
+    );
+
+    adicionarLinha("Código autenticador", dados.codigo);
+
+    adicionarLinha(
+      "Situação do registro",
+      dados.status === "valido" ? "Válido" : "Revogado ou inválido"
+    );
+
+    const aviso = document.createElement("p");
+    aviso.textContent =
+      "Este é um protótipo demonstrativo, sem validade oficial.";
+    resultado.appendChild(aviso);
+
+    resultado.hidden = false;
+
+  } catch (error) {
+    mostrarErro("Não foi possível consultar o servidor. Tente novamente.");
+  }
+}
+
+formulario.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const codigo = campoCodigo.value.trim().toUpperCase();
+
+  if (!codigo) {
+    mostrarErro("Digite o código autenticador.");
+    return;
+  }
+
+  await consultar(codigo);
+
+  const url = new URL(window.location.href);
+  url.searchParams.set("codigo", codigo);
+  history.replaceState(null, "", url);
+});
+
+const codigoInicial = new URLSearchParams(window.location.search).get("codigo");
+
+if (codigoInicial) {
+  campoCodigo.value = codigoInicial;
+  consultar(codigoInicial.trim().toUpperCase());
+}
+</script>
+</body>
+</html>

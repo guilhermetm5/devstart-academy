@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MongoDB para Desenvolvedores | DevStart</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#f1f5f9;font-family:Arial,sans-serif;line-height:1.7}
+header{padding:20px 7%;border-bottom:1px solid #29344d;display:flex;justify-content:space-between}
+header a{color:#a5b4fc;text-decoration:none}
+main{max-width:900px;margin:auto;padding:45px 22px}
+.badge{color:#a5b4fc;font-size:13px}
+h1{font-size:38px;line-height:1.2}
+p{color:#b7c3d8}
+.card{background:#131c31;border:1px solid #29344d;border-radius:12px;padding:24px;margin:22px 0}
+h2{font-size:23px}
+h3{color:#c7d2fe}
+pre{background:#080d19;padding:16px;border-radius:8px;overflow:auto;color:#86efac}
+code{font-family:Consolas,monospace}
+button{background:#6366f1;color:white;border:0;border-radius:8px;padding:12px 18px;cursor:pointer;font-size:15px}
+button:hover{background:#4f46e5}
+label{display:block;margin:12px 0;color:#dbe4f5}
+input[type=radio]{margin-right:8px}
+#resultado{margin-top:18px}
+</style>
+</head>
+<body>
+<header>
+<strong>DevStart<span style="color:#818cf8">.</span></strong>
+<a href="/">← Voltar ao início</a>
+</header>
+<main>
+<span class="badge">MÓDULO 01 · BANCO DE DADOS</span>
+<h1>Comandos que todo desenvolvedor deveria saber</h1>
+<p>Aprenda os fundamentos do MongoDB e pratique operações essenciais com documentos.</p>
+
+<section class="card">
+<h2>01. Conhecendo o MongoDB</h2>
+<p>O MongoDB é um banco de dados NoSQL orientado a documentos. Em vez de tabelas e linhas tradicionais, ele organiza informações em coleções e documentos BSON, semelhantes ao JSON.</p>
+<pre><code>show dbs</code></pre>
+<p>Lista os bancos de dados disponíveis no servidor.</p>
+</section>
+
+<section class="card">
+<h2>02. Selecionando um banco</h2>
+<pre><code>use minha_aplicacao</code></pre>
+<p>Seleciona o banco de dados. Se ele ainda não existir, será criado quando você armazenar dados nele.</p>
+</section>
+
+<section class="card">
+<h2>03. Inserindo documentos</h2>
+<pre><code>db.usuarios.insertOne({
+  nome: "Ana",
+  idade: 25,
+  ativo: true
+})</code></pre>
+<p>O método <code>insertOne()</code> insere um documento em uma coleção. Se necessário, a coleção será criada automaticamente.</p>
+</section>
+
+<section class="card">
+<h2>04. Consultando documentos</h2>
+<pre><code>db.usuarios.find()
+db.usuarios.find({ idade: { $gt: 18 } })</code></pre>
+<p>O primeiro comando retorna os documentos da coleção. O segundo filtra usuários com idade superior a 18 anos.</p>
+</section>
+
+<section class="card">
+<h2>05. Atualizando documentos</h2>
+<pre><code>db.usuarios.updateOne(
+  { nome: "Ana" },
+  { $set: { ativo: false } }
+)</code></pre>
+<p>O <code>updateOne()</code> atualiza o primeiro documento que corresponde ao filtro.</p>
+</section>
+
+<section class="card">
+<h2>06. Excluindo documentos</h2>
+<pre><code>db.usuarios.deleteOne({ nome: "Ana" })</code></pre>
+<p>O <code>deleteOne()</code> exclui o primeiro documento correspondente. Sempre confira o filtro antes de executar exclusões.</p>
+</section>
+
+<section class="card">
+<h2>07. Contando documentos</h2>
+<pre><code>db.usuarios.countDocuments()</code></pre>
+<p>Retorna a quantidade de documentos da coleção. Você também pode passar um filtro para contar apenas os documentos que correspondem a ele.</p>
+</section>
+
+<section class="card" id="avaliacao">
+<h2>Questionário de conclusão</h2>
+<p>Responda às três perguntas. Você precisa acertar todas para liberar a emissão do certificado demonstrativo.</p>
+
+<form id="quiz">
+<p><strong>1. Qual comando consulta documentos?</strong></p>
+<label><input type="radio" name="q1" value="a" required> insertOne()</label>
+<label><input type="radio" name="q1" value="b"> find()</label>
+<label><input type="radio" name="q1" value="c"> deleteOne()</label>
+
+<p><strong>2. Qual método atualiza um documento?</strong></p>
+<label><input type="radio" name="q2" value="a" required> updateOne()</label>
+<label><input type="radio" name="q2" value="b"> countDocuments()</label>
+<label><input type="radio" name="q2" value="c"> show dbs</label>
+
+<p><strong>3. Como o MongoDB organiza os dados?</strong></p>
+<label><input type="radio" name="q3" value="a" required> Apenas em planilhas</label>
+<label><input type="radio" name="q3" value="b"> Em coleções e documentos</label>
+<label><input type="radio" name="q3" value="c"> Apenas em arquivos PDF</label>
+
+<button type="submit">Enviar respostas</button>
+</form>
+<div id="resultado"></div>
+</section>
+
+<footer style="text-align:center;color:#8490a8;padding:20px">
+DevStart Academy · Conteúdo demonstrativo
+</footer>
+</main>
+
+<script>
+document.getElementById("quiz").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const respostas = {
+    q1: "b",
+    q2: "a",
+    q3: "b"
+  };
+
+  const dados = new FormData(this);
+  const acertos = Object.keys(respostas).filter(
+    pergunta => dados.get(pergunta) === respostas[pergunta]
+  ).length;
+
+  const resultado = document.getElementById("resultado");
+
+  if (acertos === 3) {
+    resultado.innerHTML = `
+      <p style="color:#86efac">Parabéns! Você acertou todas as questões.</p>
+      <button type="button" id="emitir">Continuar para emissão do certificado</button>
+    `;
+
+    document.getElementById("emitir").addEventListener("click", () => {
+      window.location.href = "/certificado.html";
+    });
+  } else {
+    resultado.innerHTML = `
+      <p style="color:#fca5a5">Você acertou ${acertos} de 3 questões. Revise o conteúdo e tente novamente.</p>
+    `;
+  }
+});
+</script>
+</body>
+</html>
